@@ -16,7 +16,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-# define OPEN_MAX 65536
+# define OPEN_MAX 4096
 
 int		get_next_line(int fd, char **line);
 

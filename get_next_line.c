@@ -12,11 +12,13 @@
 
 #include "get_next_line.h"
 
-int	chk_newline(char *buf)
+int		chk_newline(char *buf)
 {
 	size_t	i;
 
 	i = 0;
+	if (!buf)
+		return (0);
 	while (buf[i])
 	{
 		if (buf[i] == '\n')
@@ -26,64 +28,84 @@ int	chk_newline(char *buf)
 	return (0);
 }
 
-int	split_by_newline(char **store, char **line)
+void	split_by_newline(char **store, char **line)
 {
 	char	*tmp;
 	size_t	i;
 
 	i = 0;
-	while ((*store)[i])
+	if (!*store)
 	{
-		if ((*store)[i] == '\n')
-		{
-			(*store)[i] = '\0';
-			break ;
-		}
+		*line = 0;
+		return ;
+	}
+	while ((*store)[i] && (*store)[i] != '\n')
+		i++;
+	if (!(*line = malloc(sizeof(char) * (i + 1))))
+	{
+		*line = 0;
+		return ;
+	}
+	while ((*store)[i] && (*store)[i] != '\n')
+	{
+		(*line)[i] = (*store)[i]];
 		i++;
 	}
-	*line = ft_strdup(*store);
-	if (ft_strlen(*store + i + 1) == 0)
+	(*line)[i] = '\0';
+}
+
+char	*poc_remain(char **store)
+{
+	char	*ret;
+	size_t	i;
+	size_t	j;
+
+	if (!*store)
+		return (0);
+	i = 0;
+	j = 0;
+	while ((*store)[i] && (*store)[i] != '\n')
+		i++;
+	if (!*(store)[i])
 	{
 		free(*store);
-		*store = 0;
-		return (1);
+		return (0);
 	}
-	tmp = ft_strdup(*store + i + 1);
+	if (!(ret = malloc(sizeof(char) * (ft_strlen(*store) - i + 1))))
+		return (0);
+	i++;
+	while ((*store)[i])
+		ret[j++] = (*store)[i++];
+	ret[j] = '\0';
 	free(*store);
-	*store = tmp;
-	return (1);
+	return (ret);
 }
 
-int	poc_remain(int size_of_read, char **store, char **line)
+int		get_next_line(int fd, char **line)
 {
-	if (size_of_read < 0)
-		return (-1);
-	if (*store && chk_newline(*store))
-		return (split_by_newline(store, line));
-	if (*store)
-	{
-		*line = *store;
-		*store = 0;
-	}
-	else
-		*line = ft_strdup("");
-	return (0);
-}
-
-int	get_next_line(int fd, char **line)
-{
-	char			buf[BUFFER_SIZE + 1];
+	char			*buf;
 	static char		*store[OPEN_MAX];
 	int				size_of_read;
 
 	if ((fd < 0) || (BUFFER_SIZE <= 0) || (line == 0))
 		return (-1);
-	while ((size_of_read = read(fd, buf, BUFFER_SIZE)) > 0)
+	if (!(buf = malloc(sizeof(char) * (BUFFER_SIZE + 1))))
+		return (-1);
+	size_of_read = 1;
+	while (!chk_newline(store[fd]) && size_of_read != 0)
 	{
+		if ((size_of_read = read(fd, buf, BUFFER_SIZE)) == -1)
+		{
+			free(buf);
+			return (-1);
+		}
 		buf[size_of_read] = '\0';
 		store[fd] = ft_strjoin(store[fd], buf);
-		if (chk_newline(store[fd]))
-			return (split_by_newline(&store[fd], line));
 	}
-	return (poc_remain(size_of_read, &store[fd], line));
+	free(buf);
+	split_by_newline(&store[fd], line));
+	*line = poc_remain(&store[fd]);
+	if (size_of_read == 0)
+		return (0);
+	return (1);
 }

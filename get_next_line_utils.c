@@ -25,64 +25,64 @@ size_t	ft_strlen(const char *str)
 	return (len);
 }
 
-size_t	ft_strlcat(char *dest, const char *src, size_t size)
-{
-	size_t ret;
+// size_t	ft_strlcat(char *dest, const char *src, size_t size)
+// {
+// 	size_t ret;
 
-	ret = 0;
-	while (*dest && ret < size)
-	{
-		dest++;
-		ret++;
-	}
-	while (*src && ret + 1 < size)
-	{
-		*dest = *src;
-		dest++;
-		src++;
-		ret++;
-	}
-	if (ret < size)
-		*dest = '\0';
-	while (*src)
-	{
-		src++;
-		ret++;
-	}
-	return (ret);
-}
+// 	ret = 0;
+// 	while (*dest && ret < size)
+// 	{
+// 		dest++;
+// 		ret++;
+// 	}
+// 	while (*src && ret + 1 < size)
+// 	{
+// 		*dest = *src;
+// 		dest++;
+// 		src++;
+// 		ret++;
+// 	}
+// 	if (ret < size)
+// 		*dest = '\0';
+// 	while (*src)
+// 	{
+// 		src++;
+// 		ret++;
+// 	}
+// 	return (ret);
+// }
 
-size_t	ft_strlcpy(char *dest, const char *src, size_t size)
-{
-	size_t	pos;
+// size_t	ft_strlcpy(char *dest, const char *src, size_t size)
+// {
+// 	size_t	pos;
 
-	pos = 0;
-	while (src[pos] && pos + 1 < size)
-	{
-		dest[pos] = src[pos];
-		pos++;
-	}
-	if (size != 0)
-		dest[pos] = '\0';
-	while (src[pos])
-		pos++;
-	return (pos);
-}
+// 	pos = 0;
+// 	while (src[pos] && pos + 1 < size)
+// 	{
+// 		dest[pos] = src[pos];
+// 		pos++;
+// 	}
+// 	if (size != 0)
+// 		dest[pos] = '\0';
+// 	while (src[pos])
+// 		pos++;
+// 	return (pos);
+// }
 
-char	*ft_strdup(const char *src)
-{
-	char	*ret;
-	size_t	idx;
-	size_t	len;
+// char	*ft_strdup(const char *src)
+// {
+// 	char	*ret;
+// 	size_t	idx;
+// 	size_t	len;
 
-	len = ft_strlen(src);
-	ret = (char *)malloc(sizeof(char) * (len + 1));
-	idx = -1;
-	while (++idx < len)
-		ret[idx] = src[idx];
-	ret[idx] = '\0';
-	return (ret);
-}
+// 	len = ft_strlen(src);
+// 	ret = (char *)malloc(sizeof(char) * (len + 1));
+// 	idx = -1;
+// 	while (++idx < len)
+// 		ret[idx] = src[idx];
+// 	ret[idx] = '\0';
+// 	return (ret);
+// }
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {

@@ -6,7 +6,7 @@
 /*   By: jechoi <jechoi@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 17:10:11 by jechoi            #+#    #+#             */
-/*   Updated: 2021/05/26 21:15:12 by jechoi           ###   ########.fr       */
+/*   Updated: 2021/05/27 20:33:44 by jechoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int		chk_newline(char *buf)
 
 void	split_by_newline(char **store, char **line)
 {
-	char	*tmp;
 	size_t	i;
 
 	i = 0;
@@ -46,15 +45,16 @@ void	split_by_newline(char **store, char **line)
 		*line = 0;
 		return ;
 	}
+	i = 0;
 	while ((*store)[i] && (*store)[i] != '\n')
 	{
-		(*line)[i] = (*store)[i]];
+		(*line)[i] = (*store)[i];
 		i++;
 	}
 	(*line)[i] = '\0';
 }
 
-char	*poc_remain(char **store)
+char	*remain_process(char **store)
 {
 	char	*ret;
 	size_t	i;
@@ -66,7 +66,7 @@ char	*poc_remain(char **store)
 	j = 0;
 	while ((*store)[i] && (*store)[i] != '\n')
 		i++;
-	if (!*(store)[i])
+	if (!(*store)[i])
 	{
 		free(*store);
 		return (0);
@@ -86,7 +86,7 @@ int		get_next_line(int fd, char **line)
 	char			*buf;
 	static char		*store[OPEN_MAX];
 	int				size_of_read;
-
+	
 	if ((fd < 0) || (BUFFER_SIZE <= 0) || (line == 0))
 		return (-1);
 	if (!(buf = malloc(sizeof(char) * (BUFFER_SIZE + 1))))
@@ -103,8 +103,8 @@ int		get_next_line(int fd, char **line)
 		store[fd] = ft_strjoin(store[fd], buf);
 	}
 	free(buf);
-	split_by_newline(&store[fd], line));
-	*line = poc_remain(&store[fd]);
+	split_by_newline(&store[fd], line);
+	store[fd] = remain_process(&store[fd]);
 	if (size_of_read == 0)
 		return (0);
 	return (1);
